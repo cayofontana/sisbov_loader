@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/lista_menu"
+        android:title="@string/listaFragment"
+        android:icon="@drawable/lista_ico"/>
+
+    <item
+        android:id="@+id/selecao_menu"
+        android:title="Seleção"
+        android:icon="@drawable/lista_ico"/>
+
+    <item
+        android:id="@+id/importacao_menu"
+        android:title="Importação"
+        android:icon="@drawable/importacao_ico"/>
+
+    <item
+        android:id="@+id/sobre_menu"
+        android:title="@string/sobreFragment"
+        android:icon="@drawable/sobre_ico"/>
+</menu>

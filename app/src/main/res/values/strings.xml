@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Sisbov Loader</string>
+    <string name="listaFragment">Lista</string>
+    <string name="importacaoFragment">Câmera</string>
+    <string name="sobreFragment">Sobre</string>
+    <string name="sobreFragment_1">BoI ID :: Identificação Bovina por Visão Computacional</string>
+    <string name="sobreFragment_2">Desenvolvido por Cayo Fontana</string>
+    <string name="sobreFragment_3">Contato: cayocruz@gmail.com / (27) 99915–0088</string>
+    <string name="remover">Remover</string>
+    <string name="copiarlista">Copiar</string>
+    <string name="gerarpdf">Exportar</string>
+    <string name="limparlista">Limpar</string>
+    <string name="titulo_dialogo_lista">Exclusão</string>
+    <string name="mensagem_dialogo_lista">Deseja realmente excluir todos os SISBOVs da lista de seleção?</string>
+    <string name="selecionar">Selecionar</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="incluir">Incluir</string>
+</resources>
