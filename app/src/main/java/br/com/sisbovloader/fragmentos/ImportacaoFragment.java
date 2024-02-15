@@ -1,7 +1,6 @@
-package com.example.sisbovloader.fragmentos;
+package br.com.sisbovloader.fragmentos;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -17,8 +16,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.sisbovloader.R;
-import com.example.sisbovloader.fragmentos.recursos.GestorPDF;
-import com.example.sisbovloader.fragmentos.recursos.LoadingPanel;
+import br.com.sisbovloader.fragmentos.recursos.GestorPDF;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.File;

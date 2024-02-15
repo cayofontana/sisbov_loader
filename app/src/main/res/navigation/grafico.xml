@@ -7,25 +7,25 @@
 
     <fragment
         android:id="@+id/listaFragment"
-        android:name="com.example.sisbovloader.fragmentos.ListaFragment"
+        android:name="br.com.sisbovloader.fragmentos.ListaFragment"
         android:label="@string/listaFragment"
         tools:layout="@layout/fragment_lista" />
 
     <fragment
         android:id="@+id/selecaoFragment"
-        android:name="com.example.sisbovloader.fragmentos.SelecaoFragment"
+        android:name="br.com.sisbovloader.fragmentos.SelecaoFragment"
         android:label="Seleção"
         tools:layout="@layout/fragment_lista" />
 
     <fragment
         android:id="@+id/importacaoFragment"
-        android:name="com.example.sisbovloader.fragmentos.ImportacaoFragment"
+        android:name="br.com.sisbovloader.fragmentos.ImportacaoFragment"
         android:label="Importação"
         tools:layout="@layout/fragment_importacao" />
 
     <fragment
         android:id="@+id/sobreFragment"
-        android:name="com.example.sisbovloader.fragmentos.SobreFragment"
+        android:name="br.com.sisbovloader.fragmentos.SobreFragment"
         android:label="@string/sobreFragment"
         tools:layout="@layout/fragment_sobre" />
 

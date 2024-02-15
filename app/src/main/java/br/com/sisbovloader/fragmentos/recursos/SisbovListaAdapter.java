@@ -1,4 +1,4 @@
-package com.example.sisbovloader.fragmentos.recursos;
+package br.com.sisbovloader.fragmentos.recursos;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.widget.AppCompatButton;
 
-import com.example.sisbovloader.PrincipalActivity;
+import br.com.sisbovloader.PrincipalActivity;
 import com.example.sisbovloader.R;
 
 import java.util.List;

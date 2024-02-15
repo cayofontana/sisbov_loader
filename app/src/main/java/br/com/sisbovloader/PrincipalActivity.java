@@ -1,4 +1,4 @@
-package com.example.sisbovloader;
+package br.com.sisbovloader;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -10,10 +10,12 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.Settings;
 
-import com.example.sisbovloader.fragmentos.ImportacaoFragment;
-import com.example.sisbovloader.fragmentos.ListaFragment;
-import com.example.sisbovloader.fragmentos.SelecaoFragment;
-import com.example.sisbovloader.fragmentos.SobreFragment;
+import br.com.sisbovloader.fragmentos.ImportacaoFragment;
+import br.com.sisbovloader.fragmentos.ListaFragment;
+import br.com.sisbovloader.fragmentos.SelecaoFragment;
+import br.com.sisbovloader.fragmentos.SobreFragment;
+
+import com.example.sisbovloader.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;

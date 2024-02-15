@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragmentos.ListaFragment">
+    tools:context="br.com.sisbovloader.fragmentos.ListaFragment">
 
     <androidx.appcompat.widget.AppCompatEditText
         android:layout_width="match_parent"

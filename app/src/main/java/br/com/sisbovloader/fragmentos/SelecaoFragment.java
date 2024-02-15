@@ -1,4 +1,4 @@
-package com.example.sisbovloader.fragmentos;
+package br.com.sisbovloader.fragmentos;
 
 import android.app.AlertDialog;
 import android.content.ClipData;
@@ -22,8 +22,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.sisbovloader.R;
-import com.example.sisbovloader.fragmentos.recursos.GestorPDF;
-import com.example.sisbovloader.fragmentos.recursos.SisbovListaAdapter;
+import br.com.sisbovloader.fragmentos.recursos.GestorPDF;
+import br.com.sisbovloader.fragmentos.recursos.SisbovListaAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

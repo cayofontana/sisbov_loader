@@ -1,4 +1,4 @@
-package com.example.sisbovloader.fragmentos.recursos;
+package br.com.sisbovloader.fragmentos.recursos;
 
 import android.app.AlertDialog;
 import android.content.Context;

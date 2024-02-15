@@ -1,4 +1,4 @@
-package com.example.sisbovloader.fragmentos;
+package br.com.sisbovloader.fragmentos;
 
 import android.os.Bundle;
 

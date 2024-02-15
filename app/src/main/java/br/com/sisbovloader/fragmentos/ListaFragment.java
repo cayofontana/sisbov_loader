@@ -1,4 +1,4 @@
-package com.example.sisbovloader.fragmentos;
+package br.com.sisbovloader.fragmentos;
 
 import android.os.Bundle;
 
@@ -16,7 +16,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.sisbovloader.R;
-import com.example.sisbovloader.fragmentos.recursos.SisbovListaAdapter;
+import br.com.sisbovloader.fragmentos.recursos.SisbovListaAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
