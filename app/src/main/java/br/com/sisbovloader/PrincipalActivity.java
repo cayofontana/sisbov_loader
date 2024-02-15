@@ -15,7 +15,6 @@ import br.com.sisbovloader.fragmentos.ListaFragment;
 import br.com.sisbovloader.fragmentos.SelecaoFragment;
 import br.com.sisbovloader.fragmentos.SobreFragment;
 
-import com.example.sisbovloader.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
@@ -37,7 +36,7 @@ public class PrincipalActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_principal);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && !Environment.isExternalStorageManager()) {
-            Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION, Uri.parse("package:com.example.sisbovloader"));
+            Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION, Uri.parse("package:br.com.sisbovloader"));
             startActivity(intent);
         }
 

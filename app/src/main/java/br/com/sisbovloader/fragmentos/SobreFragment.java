@@ -8,7 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.sisbovloader.R;
+import br.com.sisbovloader.R;
 
 public class SobreFragment extends Fragment {
     public SobreFragment() {

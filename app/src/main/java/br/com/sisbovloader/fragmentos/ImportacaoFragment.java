@@ -15,7 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.sisbovloader.R;
+import br.com.sisbovloader.R;
 import br.com.sisbovloader.fragmentos.recursos.GestorPDF;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -52,6 +52,7 @@ public class ImportacaoFragment extends ListFragment {
         super.onViewCreated(view, savedInstanceState);
         tvwNavegacao = getActivity().findViewById(R.id.tvwNavegacao);
         String raiz = Environment.getExternalStorageDirectory().toString();
+//        String raiz = Environment.getRootDirectory().toString();
 
         listarDiretorio(raiz);
     }

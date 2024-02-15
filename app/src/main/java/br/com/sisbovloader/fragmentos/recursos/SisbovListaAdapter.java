@@ -10,7 +10,7 @@ import android.widget.TextView;
 import androidx.appcompat.widget.AppCompatButton;
 
 import br.com.sisbovloader.PrincipalActivity;
-import com.example.sisbovloader.R;
+import br.com.sisbovloader.R;
 
 import java.util.List;
 

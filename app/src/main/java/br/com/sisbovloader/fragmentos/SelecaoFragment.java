@@ -21,7 +21,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.sisbovloader.R;
+import br.com.sisbovloader.R;
 import br.com.sisbovloader.fragmentos.recursos.GestorPDF;
 import br.com.sisbovloader.fragmentos.recursos.SisbovListaAdapter;
 

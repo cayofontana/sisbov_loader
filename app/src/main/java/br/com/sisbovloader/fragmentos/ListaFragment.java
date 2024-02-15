@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.sisbovloader.R;
+import br.com.sisbovloader.R;
 import br.com.sisbovloader.fragmentos.recursos.SisbovListaAdapter;
 
 import java.util.ArrayList;
