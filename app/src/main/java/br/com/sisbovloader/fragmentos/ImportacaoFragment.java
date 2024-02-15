@@ -52,8 +52,6 @@ public class ImportacaoFragment extends ListFragment {
         super.onViewCreated(view, savedInstanceState);
         tvwNavegacao = getActivity().findViewById(R.id.tvwNavegacao);
         String raiz = Environment.getExternalStorageDirectory().toString();
-//        String raiz = Environment.getRootDirectory().toString();
-
         listarDiretorio(raiz);
     }
 
