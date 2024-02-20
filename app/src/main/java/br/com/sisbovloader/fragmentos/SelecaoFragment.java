@@ -34,6 +34,7 @@ public class SelecaoFragment extends Fragment {
     private List<String> sisbovsNaoSelecionados;
     private List<String> sisbovsSelecionados;
     private List<String> sisbovsListView;
+    private SisbovListaAdapter sisbovListaAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -57,7 +58,6 @@ public class SelecaoFragment extends Fragment {
         ClipboardManager clipboard = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
         TextView txtTotal = getView().findViewById(R.id.txtTotal);
         AppCompatButton botaoCopiarLista = getView().findViewById(R.id.btnCopiarLista);
-        AtualizarLista(txtTotal);
 
         botaoCopiarLista.setOnClickListener(v -> {
             if (sisbovsListView.isEmpty())
@@ -84,6 +84,7 @@ public class SelecaoFragment extends Fragment {
             }
         });
 
+        sisbovListaAdapter = exibirSisbovs(txtTotal);
         AppCompatButton botaoLimparLista = getView().findViewById(R.id.btnLimparLista);
         botaoLimparLista.setOnClickListener(v -> {
             AlertDialog.Builder dialogo = new AlertDialog.Builder(getActivity());
@@ -95,14 +96,12 @@ public class SelecaoFragment extends Fragment {
                 sisbovsListView.clear();
                 ListView lvwSisbovs = getView().findViewById(R.id.lvwSisbovs);
                 lvwSisbovs.setAdapter(null);
-                AtualizarLista(txtTotal);
+                atualizarLista(sisbovListaAdapter, txtTotal);
             });
             dialogo.setNegativeButton("Não", null);
             AlertDialog dialogoAlerta = dialogo.create();
             dialogoAlerta.show();
         });
-
-        final SisbovListaAdapter sisbovListaAdapter = exibirSisbovs(txtTotal);
 
         AppCompatEditText pesquisaEditText = getView().findViewById(R.id.pesquisa);
         pesquisaEditText.addTextChangedListener(new TextWatcher() {
@@ -120,13 +119,14 @@ public class SelecaoFragment extends Fragment {
                 for (String sisbov : sisbovsSelecionados)
                     if (sisbov.contains(editavel.toString()))
                         sisbovsListView.add(sisbov);
-                AtualizarLista(txtTotal);
-                sisbovListaAdapter.notifyDataSetChanged();
+                atualizarLista(sisbovListaAdapter, txtTotal);
             }
         });
+        atualizarLista(sisbovListaAdapter, txtTotal);
     }
 
-    private void AtualizarLista(@NonNull TextView txtTotal) {
+    private void atualizarLista(SisbovListaAdapter sisbovListaAdapter, @NonNull TextView txtTotal) {
+        sisbovListaAdapter.notifyDataSetChanged();
         txtTotal.setText(String.valueOf(sisbovsListView.size()));
     }
 

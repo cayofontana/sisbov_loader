@@ -9,6 +9,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.Settings;
+import android.view.KeyEvent;
+import android.widget.Toast;
 
 import br.com.sisbovloader.fragmentos.ImportacaoFragment;
 import br.com.sisbovloader.fragmentos.ListaFragment;
@@ -26,6 +28,7 @@ public class PrincipalActivity extends AppCompatActivity {
     private int idFragmentoCorrente;
     private ArrayList<String> sisbovsNaoSelecionados;
     private ArrayList<String> sisbovsSelecionados;
+    private String codigoDeBarras;
 
     public int getIdFragmento() {
         return idFragmentoCorrente;
@@ -44,6 +47,7 @@ public class PrincipalActivity extends AppCompatActivity {
         idFragmentoCorrente = -1;
         sisbovsNaoSelecionados = new ArrayList<>();
         sisbovsSelecionados = new ArrayList<>();
+        codigoDeBarras = "";
 
         BottomNavigationView navegacaoView = findViewById(R.id.bottom_navigation);
         navegacaoView.setSelectedItemId(idFragmentoCorrente);
@@ -65,5 +69,35 @@ public class PrincipalActivity extends AppCompatActivity {
             return true;
         });
         navegacaoView.setSelectedItemId(R.id.importacao_menu);
+    }
+
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent evento) {
+        if (evento.getKeyCode() == KeyEvent.KEYCODE_DEL)
+            return super.dispatchKeyEvent(evento);
+
+        if (evento.getAction() == KeyEvent.ACTION_DOWN && evento.getKeyCode() != KeyEvent.KEYCODE_ENTER) {
+            char teclaPressionada = (char) evento.getUnicodeChar();
+            codigoDeBarras += teclaPressionada;
+        }
+
+        if (evento.getAction() == KeyEvent.ACTION_UP  && evento.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+            if (codigoDeBarras.length() > 15)
+                codigoDeBarras = codigoDeBarras.substring(codigoDeBarras.length() - 15);
+            if (!sisbovsNaoSelecionados.contains(codigoDeBarras) && !sisbovsSelecionados.contains(codigoDeBarras))
+                Toast.makeText(getApplicationContext(), "O SISBOV " + codigoDeBarras + " não foi encontrado.", Toast.LENGTH_SHORT).show();
+            else if (sisbovsSelecionados.contains(codigoDeBarras))
+                Toast.makeText(getApplicationContext(), "O SISBOV " + codigoDeBarras + " já está na lista de seleção.", Toast.LENGTH_LONG).show();
+            else {
+                sisbovsSelecionados.add(codigoDeBarras);
+                sisbovsNaoSelecionados.remove(codigoDeBarras);
+                BottomNavigationView navegacaoView = findViewById(R.id.bottom_navigation);
+                if (idFragmentoCorrente == R.id.selecao_menu)
+                    navegacaoView.setSelectedItemId(R.id.lista_menu);
+                navegacaoView.setSelectedItemId(R.id.selecao_menu);
+            }
+            codigoDeBarras = "";
+        }
+        return false;
     }
 }
