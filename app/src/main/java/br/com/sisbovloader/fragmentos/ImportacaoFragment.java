@@ -16,10 +16,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import br.com.sisbovloader.PrincipalActivity;
 import br.com.sisbovloader.R;
 import br.com.sisbovloader.fragmentos.recursos.GestorPDF;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -49,6 +51,16 @@ public class ImportacaoFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        final View grupoImportacao = getView().findViewById(R.id.grupoImportacao);
+        final SwitchMaterial chaveImportacao = getView().findViewById(R.id.chaveImportacao);
+        chaveImportacao.setChecked(((PrincipalActivity) getActivity()).getImportarExtrato());
+        chaveImportacao.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            BottomNavigationView navegacaoView = getActivity().findViewById(R.id.bottom_navigation);
+            navegacaoView.getMenu().findItem(R.id.lista_menu).setEnabled(isChecked);
+            ((PrincipalActivity) getActivity()).setImportarExtrato(isChecked);
+            grupoImportacao.setVisibility(isChecked ? View.VISIBLE : View.GONE);
+        });
 
         AppCompatButton botaoPDF = getView().findViewById(R.id.botao_pdf);
         botaoPDF.setOnClickListener(v -> {

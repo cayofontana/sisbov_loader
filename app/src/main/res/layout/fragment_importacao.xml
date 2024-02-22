@@ -7,46 +7,67 @@
     android:layout_height="match_parent"
     tools:context="br.com.sisbovloader.fragmentos.ImportacaoFragment">
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/botao_pdf"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Importar Extrato (PDF)"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/grupoInformacao"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"/>
-
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/grupoInformacao"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/botao_pdf"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="0dp"
+        android:id="@+id/grupoImportacao"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/chaveImportacao"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent">
 
-    <TextView
-        android:id="@+id/texto_duvida"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="@style/TextAppearance.AppCompat.Button"
-        android:text="Dúvidas sobre qual arquivo importar?"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/botao_informacoes"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"/>
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/botao_pdf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Importar Extrato (PDF)"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/grupoInformacao"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"/>
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/botao_informacoes"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Clique Aqui"
-        app:layout_constraintTop_toBottomOf="@id/texto_duvida"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"/>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/grupoInformacao"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/botao_pdf"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent">
+
+        <TextView
+            android:id="@+id/texto_duvida"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.Button"
+            android:text="Dúvidas sobre qual arquivo importar?"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/botao_informacoes"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/botao_informacoes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Clique Aqui"
+            app:layout_constraintTop_toBottomOf="@id/texto_duvida"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/chaveImportacao"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/botao_utilizar_importacao"
+        android:textAppearance="@style/TextAppearance.AppCompat.Button"
+        android:background="#f0f0f0"
+        android:paddingStart="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

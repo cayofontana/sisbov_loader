@@ -12,10 +12,13 @@
     <string name="limparlista">Limpar</string>
     <string name="titulo_dialogo_lista">Exclusão</string>
     <string name="mensagem_dialogo_lista">Deseja realmente excluir todos os SISBOVs da lista de seleção?</string>
+    <string name="mensagem_dialogo_selecao_sem_lista">Deseja realmente excluir todos os registros da lista?</string>
     <string name="selecionar">Selecionar</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="incluir">Incluir</string>
     <string name="texto_informacao_importacao">Esta versão do Sisbov Loader é independente de banco de dados local, pois o objetivo deste aplicativo é utilizar a base de dados oficial do produtor rural brasileiro, que encontra-se no Ministério de Agricultura, Pecuária e Abastecimento (MAPA).\n\nAtravés dos sistemas do MAPA O produtor rural regularmente registrado possui permissão para extrair, dentre outros, o relatório intitulado Extrato de Animais Vivos.\nEste relatório exibe todos os animais vivos da fazenda do produtor.\n\nA imagem abaixo apresenta um exemplo do arquivo que deverá ser importado:</string>
     <string name="botao_utilizar_importacao">Importar Arquivo (PDF) do MAPA?</string>
+    <string name="textoSisbovSobre">Sisbov Loader v1.0 :: Identificação animais através do Sistema Brasileiro de Identificação Individual de Bovinos e Búfalos (SISBOV).\nO Sisbov Loader também pode ser utilizado para o manejo de animais que possuem qualquer tipo de identificação.</string>
+    <string name="textoboiidsobre">Conheça também o BoiID: identificação de animais por Visão Computacional.</string>
 </resources>

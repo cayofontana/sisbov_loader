@@ -11,6 +11,12 @@
         android:icon="@drawable/lista_ico"/>
 
     <item
+        android:id="@+id/selecao_sem_lista_menu"
+        android:title="Lista"
+        android:visible="false"
+        android:icon="@drawable/lista_ico"/>
+
+    <item
         android:id="@+id/importacao_menu"
         android:title="Importação"
         android:icon="@drawable/importacao_ico"/>

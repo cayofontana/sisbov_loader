@@ -18,6 +18,12 @@
         tools:layout="@layout/fragment_lista" />
 
     <fragment
+        android:id="@+id/SelecaoSemListaFragment"
+        android:name="br.com.sisbovloader.fragmentos.SelecaoSemListaFragment"
+        android:label="Lista"
+        tools:layout="@layout/fragment_lista" />
+
+    <fragment
         android:id="@+id/importacaoFragment"
         android:name="br.com.sisbovloader.fragmentos.ImportacaoFragment"
         android:label="Importação"
