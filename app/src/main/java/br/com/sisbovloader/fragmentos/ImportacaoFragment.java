@@ -1,37 +1,36 @@
 package br.com.sisbovloader.fragmentos;
 
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.ListFragment;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.fragment.app.Fragment;
 
-import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
 
 import br.com.sisbovloader.R;
 import br.com.sisbovloader.fragmentos.recursos.GestorPDF;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.io.File;
-import java.util.ArrayList;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.List;
-import java.util.Objects;
 
-public class ImportacaoFragment extends ListFragment {
+public class ImportacaoFragment extends Fragment {
     private static final String SISBOVS_NAO_SELECIONADOS = "SISBOVS_NAO_SELECIONADOS";
     private static final String SISBOVS_SELECIONADOS = "SISBOVS_SELECIONADOS";
     private List<String> sisbovsNaoSelecionados;
     private List<String> sisbovsSelecionados;
-    private List<String> enderecos = null;
-    private TextView tvwNavegacao;
+    private static final int CODIGO_REQUISICAO_PDF = 1;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,61 +49,47 @@ public class ImportacaoFragment extends ListFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        tvwNavegacao = getActivity().findViewById(R.id.tvwNavegacao);
-        String raiz = Environment.getExternalStorageDirectory().toString();
-        listarDiretorio(raiz);
+
+        AppCompatButton botaoPDF = getView().findViewById(R.id.botao_pdf);
+        botaoPDF.setOnClickListener(v -> {
+            localizarArquivoPDF();
+        });
+
+        AppCompatButton botaoInformacoes = getView().findViewById(R.id.botao_informacoes);
+        botaoInformacoes.setOnClickListener(v -> {
+            AlertDialog.Builder construtorDialogo = new AlertDialog.Builder(getActivity());
+            LayoutInflater inflater = requireActivity().getLayoutInflater();
+            construtorDialogo.setView(inflater.inflate(R.layout.dialogo_informacoes_importacao, null));
+            construtorDialogo.setPositiveButton("Fechar",null);
+            AlertDialog dialogoInformacoes = construtorDialogo.create();
+            dialogoInformacoes.show();
+        });
     }
 
-    private void listarDiretorio(String raiz) {
-        tvwNavegacao.setText("Você está em: " + raiz);
-        List<String> item = new ArrayList<String>();
-        enderecos = new ArrayList<>();
-        File diretorio = new File(raiz);
-        File[] arquivos = diretorio.listFiles();
+    private void localizarArquivoPDF() {
+        Intent intencao = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        intencao.setType("application/pdf");
+        intencao.addCategory(Intent.CATEGORY_OPENABLE);
+        getActivity().startActivityForResult(intencao, CODIGO_REQUISICAO_PDF);
+    }
 
-        if (!diretorio.equals(raiz)) {
-            item.add(raiz);
-            enderecos.add(raiz);
-            item.add("../");
-            enderecos.add(diretorio.getParent());
-        }
-
-        for (File arquivo : arquivos)
-            if (!arquivo.isHidden() && arquivo.canRead()) {
-                enderecos.add(arquivo.getPath());
-                if (arquivo.isDirectory())
-                    item.add(arquivo.getName() + "/");
-                else if (Objects.equals(obterExtensao(arquivo.getName()), "pdf"))
-                    item.add(arquivo.getName());
+    public void processarArquivo(int codigoRequisicao, int codigoResultante, Intent intencao) {
+        if (codigoRequisicao == CODIGO_REQUISICAO_PDF && codigoResultante == Activity.RESULT_OK) {
+            if (intencao != null) {
+                Uri uri = intencao.getData();
+                if (uri != null) {
+                    try {
+                        InputStream arquivo = getActivity().getContentResolver().openInputStream(uri);
+                        sisbovsSelecionados.clear();
+                        sisbovsNaoSelecionados.clear();
+                        sisbovsNaoSelecionados.addAll(new GestorPDF().carregar(arquivo));
+                        BottomNavigationView navegacaoView = getActivity().findViewById(R.id.bottom_navigation);
+                        navegacaoView.setSelectedItemId(R.id.lista_menu);
+                    } catch (FileNotFoundException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
             }
-
-        ArrayAdapter<String> listaArquivos = new ArrayAdapter<>(getActivity(), R.layout.linha, item);
-        setListAdapter(listaArquivos);
-    }
-
-    @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
-        File arquivo = new File(enderecos.get(position));
-
-        if (arquivo.isDirectory()) {
-            if (arquivo.canRead())
-                listarDiretorio(enderecos.get(position));
-            else
-                new AlertDialog.Builder(getContext())
-                        .setIcon(R.drawable.ic_launcher_foreground)
-                        .setTitle("[" + arquivo.getName() + "] não pode ser lido.")
-                        .setPositiveButton("OK", null).show();
-        } else {
-            sisbovsSelecionados.clear();
-            sisbovsNaoSelecionados.clear();
-            sisbovsNaoSelecionados.addAll(new GestorPDF().carregar(arquivo.getAbsolutePath()));
-            BottomNavigationView navegacaoView = getActivity().findViewById(R.id.bottom_navigation);
-            navegacaoView.setSelectedItemId(R.id.lista_menu);
         }
-    }
-
-    private String obterExtensao(String nomeArquivo) {
-        int sufixoNomerquivo = nomeArquivo.lastIndexOf(".");
-        return sufixoNomerquivo > 0 ? nomeArquivo.substring(sufixoNomerquivo + 1).toLowerCase() : null;
     }
 }

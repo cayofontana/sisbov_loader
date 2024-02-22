@@ -4,11 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.Settings;
 import android.view.KeyEvent;
 import android.widget.Toast;
 
@@ -38,10 +34,6 @@ public class PrincipalActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_principal);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && !Environment.isExternalStorageManager()) {
-            Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION, Uri.parse("package:br.com.sisbovloader"));
-            startActivity(intent);
-        }
 
         fragmentoCorrente = null;
         idFragmentoCorrente = -1;
@@ -99,5 +91,12 @@ public class PrincipalActivity extends AppCompatActivity {
             codigoDeBarras = "";
         }
         return false;
+    }
+
+    @Override
+    protected void onActivityResult(int codigoRequisicao, int codigoResultante, Intent intencao) {
+        super.onActivityResult(codigoRequisicao, codigoResultante, intencao);
+        if (idFragmentoCorrente == R.id.importacao_menu)
+            ((ImportacaoFragment) fragmentoCorrente).processarArquivo(codigoRequisicao, codigoResultante, intencao);
     }
 }

@@ -12,6 +12,7 @@ import com.itextpdf.text.pdf.parser.PdfTextExtractor;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -50,10 +51,10 @@ public class GestorPDF {
         document.close();
     }
 
-    public List<String> carregar(String endereco) {
+    public List<String> carregar(InputStream arquivo) {
         List<String> sisbovs = new ArrayList<>();
         try {
-            PdfReader leitor = new PdfReader(endereco);
+            PdfReader leitor = new PdfReader(arquivo);
             int totalPaginas = leitor.getNumberOfPages();
             String conteudoPagina = "";
             for (int paginaAtual = 1; paginaAtual <= totalPaginas; paginaAtual++) {

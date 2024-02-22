@@ -1,0 +1,20 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/texto_informacao_importacao"
+        android:id="@+id/texto_informacao_importacao"
+        android:padding="10dp"/>
+
+    <ImageView
+        android:src="@drawable/extrato_animais_exemplo"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/lista_botoes"
+        android:scaleType="fitXY"/>
+
+</LinearLayout>
