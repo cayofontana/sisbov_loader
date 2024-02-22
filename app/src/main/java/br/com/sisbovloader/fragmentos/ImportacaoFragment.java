@@ -14,7 +14,6 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 
 import br.com.sisbovloader.PrincipalActivity;
 import br.com.sisbovloader.R;
@@ -57,6 +56,9 @@ public class ImportacaoFragment extends Fragment {
 
         final View grupoImportacao = getView().findViewById(R.id.grupoImportacao);
         final SwitchMaterial chaveImportacao = getView().findViewById(R.id.chaveImportacao);
+
+        grupoImportacao.setVisibility(((PrincipalActivity) getActivity()).getImportarExtrato() ? View.VISIBLE : View.GONE);
+
         chaveImportacao.setChecked(((PrincipalActivity) getActivity()).getImportarExtrato());
         chaveImportacao.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (exibirDialogo && (!sisbovsSelecionados.isEmpty() || !sisbovsNaoSelecionados.isEmpty())) {
@@ -67,17 +69,17 @@ public class ImportacaoFragment extends Fragment {
                     sisbovsNaoSelecionados.clear();
                     sisbovsSelecionados.clear();
                     alterarOperacionalidade(grupoImportacao, isChecked);
+                    exibirTelaListaSemImportacao(isChecked);
                 });
                 dialogo.setNegativeButton("Não", (dialog, which) -> {
-                    chaveImportacao.setOnCheckedChangeListener(null);
                     chaveImportacao.setChecked(!isChecked);
-                    chaveImportacao.setOnCheckedChangeListener(null);
                 });
                 AlertDialog dialogoAlerta = dialogo.create();
                 dialogoAlerta.show();
             }
             else {
                 alterarOperacionalidade(grupoImportacao, isChecked);
+                exibirTelaListaSemImportacao(isChecked);
             }
             exibirDialogo = !exibirDialogo;
         });
@@ -130,5 +132,12 @@ public class ImportacaoFragment extends Fragment {
         navegacaoView.getMenu().findItem(R.id.lista_menu).setEnabled(deveAlterar);
         ((PrincipalActivity) getActivity()).setImportarExtrato(deveAlterar);
         grupoImportacao.setVisibility(deveAlterar ? View.VISIBLE : View.GONE);
+    }
+
+    private void exibirTelaListaSemImportacao(boolean importacaoArquivo) {
+        if (!importacaoArquivo) {
+            BottomNavigationView navegacaoView = getActivity().findViewById(R.id.bottom_navigation);
+            navegacaoView.setSelectedItemId(R.id.selecao_sem_lista_menu);
+        }
     }
 }
