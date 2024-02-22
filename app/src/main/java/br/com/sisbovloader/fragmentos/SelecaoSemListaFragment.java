@@ -22,7 +22,6 @@ import androidx.fragment.app.Fragment;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import br.com.sisbovloader.R;
 import br.com.sisbovloader.fragmentos.recursos.GestorPDF;

@@ -48,12 +48,7 @@ public class SisbovSemListaAdapter extends ArrayAdapter<String> {
         AppCompatButton btnAcao = linhavisao.findViewById(R.id.btnAcao);
 
         titulo.setText(sisbovsListView.get(indice));
-        btnAcao.setText(R.string.incluir);
-        PrincipalActivity principalActivity = (PrincipalActivity) contexto;
-        if (principalActivity.getIdFragmento() == R.id.lista_menu)
-            btnAcao.setText(R.string.incluir);
-        else
-            btnAcao.setText(R.string.remover);
+        btnAcao.setText(R.string.remover);
         btnAcao.setOnClickListener(v -> {
             v.setVisibility(View.GONE);
             sisbovsListView.remove(indice);

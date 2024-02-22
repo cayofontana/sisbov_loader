@@ -48,7 +48,6 @@ public class SisbovListaAdapter extends ArrayAdapter<String> {
         AppCompatButton btnAcao = linhavisao.findViewById(R.id.btnAcao);
 
         titulo.setText(sisbovsListView.get(indice));
-        btnAcao.setText(R.string.incluir);
         PrincipalActivity principalActivity = (PrincipalActivity) contexto;
         if (principalActivity.getIdFragmento() == R.id.lista_menu)
             btnAcao.setText(R.string.incluir);

@@ -87,7 +87,7 @@ public class PrincipalActivity extends AppCompatActivity {
         }
 
         if (evento.getAction() == KeyEvent.ACTION_UP  && evento.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
-            processarCodigoBarras();
+            processarCodigoDeBarras();
             codigoDeBarras = "";
         }
         return false;
@@ -107,7 +107,7 @@ public class PrincipalActivity extends AppCompatActivity {
         navegacaoView.getMenu().findItem(R.id.selecao_sem_lista_menu).setVisible(!importarExtrato);
     }
 
-    private void processarCodigoBarras() {
+    private void processarCodigoDeBarras() {
         if (importarExtrato) {
             if (codigoDeBarras.length() > 15)
                 codigoDeBarras = codigoDeBarras.substring(codigoDeBarras.length() - 15);

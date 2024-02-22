@@ -2,7 +2,6 @@ package br.com.sisbovloader.fragmentos;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
 import br.com.sisbovloader.PrincipalActivity;
 import br.com.sisbovloader.R;
@@ -34,6 +34,8 @@ public class ImportacaoFragment extends Fragment {
     private List<String> sisbovsSelecionados;
     private static final int CODIGO_REQUISICAO_PDF = 1;
 
+    private boolean exibirDialogo;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +43,7 @@ public class ImportacaoFragment extends Fragment {
             sisbovsNaoSelecionados = getArguments().getStringArrayList(SISBOVS_NAO_SELECIONADOS);
             sisbovsSelecionados = getArguments().getStringArrayList(SISBOVS_SELECIONADOS);
         }
+        exibirDialogo = true;
     }
 
     @Override
@@ -56,10 +59,27 @@ public class ImportacaoFragment extends Fragment {
         final SwitchMaterial chaveImportacao = getView().findViewById(R.id.chaveImportacao);
         chaveImportacao.setChecked(((PrincipalActivity) getActivity()).getImportarExtrato());
         chaveImportacao.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            BottomNavigationView navegacaoView = getActivity().findViewById(R.id.bottom_navigation);
-            navegacaoView.getMenu().findItem(R.id.lista_menu).setEnabled(isChecked);
-            ((PrincipalActivity) getActivity()).setImportarExtrato(isChecked);
-            grupoImportacao.setVisibility(isChecked ? View.VISIBLE : View.GONE);
+            if (exibirDialogo && (!sisbovsSelecionados.isEmpty() || !sisbovsNaoSelecionados.isEmpty())) {
+                AlertDialog.Builder dialogo = new AlertDialog.Builder(getActivity());
+                dialogo.setMessage("Ao alterar esta opção, todas as listas (e suas respectivas alterações) serão excluídas.\nDeseja realmente realizar esta operação?").setTitle("Importação do Extrato");
+                dialogo.setCancelable(false);
+                dialogo.setPositiveButton("Sim", (dialog, which) -> {
+                    sisbovsNaoSelecionados.clear();
+                    sisbovsSelecionados.clear();
+                    alterarOperacionalidade(grupoImportacao, isChecked);
+                });
+                dialogo.setNegativeButton("Não", (dialog, which) -> {
+                    chaveImportacao.setOnCheckedChangeListener(null);
+                    chaveImportacao.setChecked(!isChecked);
+                    chaveImportacao.setOnCheckedChangeListener(null);
+                });
+                AlertDialog dialogoAlerta = dialogo.create();
+                dialogoAlerta.show();
+            }
+            else {
+                alterarOperacionalidade(grupoImportacao, isChecked);
+            }
+            exibirDialogo = !exibirDialogo;
         });
 
         AppCompatButton botaoPDF = getView().findViewById(R.id.botao_pdf);
@@ -103,5 +123,12 @@ public class ImportacaoFragment extends Fragment {
                 }
             }
         }
+    }
+
+    private void alterarOperacionalidade(final View grupoImportacao, boolean deveAlterar) {
+        BottomNavigationView navegacaoView = getActivity().findViewById(R.id.bottom_navigation);
+        navegacaoView.getMenu().findItem(R.id.lista_menu).setEnabled(deveAlterar);
+        ((PrincipalActivity) getActivity()).setImportarExtrato(deveAlterar);
+        grupoImportacao.setVisibility(deveAlterar ? View.VISIBLE : View.GONE);
     }
 }
