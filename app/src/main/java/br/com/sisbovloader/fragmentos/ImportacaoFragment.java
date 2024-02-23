@@ -64,12 +64,11 @@ public class ImportacaoFragment extends Fragment {
             if (exibirDialogo && (!sisbovsSelecionados.isEmpty() || !sisbovsNaoSelecionados.isEmpty())) {
                 AlertDialog.Builder dialogo = new AlertDialog.Builder(getActivity());
                 dialogo.setMessage("Ao alterar esta opção, todas as listas (e suas respectivas alterações) serão excluídas.\nDeseja realmente realizar esta operação?").setTitle("Importação do Extrato");
-                dialogo.setCancelable(false);
+                dialogo.setCancelable(true);
                 dialogo.setPositiveButton("Sim", (dialog, which) -> {
                     sisbovsNaoSelecionados.clear();
                     sisbovsSelecionados.clear();
                     alterarOperacionalidade(grupoImportacao, isChecked);
-                    exibirTelaListaSemImportacao(isChecked);
                 });
                 dialogo.setNegativeButton("Não", (dialog, which) -> {
                     chaveImportacao.setChecked(!isChecked);
@@ -77,10 +76,8 @@ public class ImportacaoFragment extends Fragment {
                 AlertDialog dialogoAlerta = dialogo.create();
                 dialogoAlerta.show();
             }
-            else {
+            else
                 alterarOperacionalidade(grupoImportacao, isChecked);
-                exibirTelaListaSemImportacao(isChecked);
-            }
             exibirDialogo = !exibirDialogo;
         });
 
@@ -127,17 +124,13 @@ public class ImportacaoFragment extends Fragment {
         }
     }
 
-    private void alterarOperacionalidade(final View grupoImportacao, boolean deveAlterar) {
-        BottomNavigationView navegacaoView = getActivity().findViewById(R.id.bottom_navigation);
-        navegacaoView.getMenu().findItem(R.id.lista_menu).setEnabled(deveAlterar);
+    private void alterarOperacionalidade(final View grupoImportacao , boolean deveAlterar) {
         ((PrincipalActivity) getActivity()).setImportarExtrato(deveAlterar);
         grupoImportacao.setVisibility(deveAlterar ? View.VISIBLE : View.GONE);
-    }
 
-    private void exibirTelaListaSemImportacao(boolean importacaoArquivo) {
-        if (!importacaoArquivo) {
-            BottomNavigationView navegacaoView = getActivity().findViewById(R.id.bottom_navigation);
-            navegacaoView.setSelectedItemId(R.id.selecao_sem_lista_menu);
-        }
+        BottomNavigationView navegacaoView = getActivity().findViewById(R.id.bottom_navigation);
+        navegacaoView.getMenu().findItem(R.id.lista_menu).setEnabled(deveAlterar);
+//        if (!deveAlterar)
+//            navegacaoView.setSelectedItemId(R.id.selecao_sem_lista_menu);
     }
 }

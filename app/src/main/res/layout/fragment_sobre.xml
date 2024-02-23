@@ -7,23 +7,44 @@
     tools:context="br.com.sisbovloader.fragmentos.SobreFragment">
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:layout_width="300dp"
-        android:layout_height="300dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintHeight_percent="0.35"
+        app:layout_constraintDimensionRatio="1:1"
         android:id="@+id/sisbovLogo"
         android:background="@drawable/sisbov_ico"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/textoSisbovSobre"
+        app:layout_constraintBottom_toTopOf="@id/textoSisbovSobre1"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/textoSisbovSobre"
-        android:id="@+id/textoSisbovSobre"
+        android:text="@string/textoSisbovSobre1"
+        android:id="@+id/textoSisbovSobre1"
         android:gravity="center"
         android:padding="5dp"
+        android:textStyle="bold"
         app:layout_constraintTop_toBottomOf="@id/sisbovLogo"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/textoSisbovSobre2"
+        android:id="@+id/textoSisbovSobre2"
+        android:gravity="center"
+        android:padding="5dp"
+        app:layout_constraintTop_toBottomOf="@id/textoSisbovSobre1"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/textoSisbovSobre3"
+        android:id="@+id/textoSisbovSobre3"
+        android:gravity="center"
+        android:padding="5dp"
+        app:layout_constraintTop_toBottomOf="@id/textoSisbovSobre2"/>
 
     <TextView
         android:id="@+id/texto_2"
@@ -31,7 +52,7 @@
         android:layout_height="wrap_content"
         android:text="@string/sobreFragment_2"
         android:gravity="center"
-        app:layout_constraintTop_toBottomOf="@id/textoSisbovSobre"/>
+        app:layout_constraintTop_toBottomOf="@id/textoSisbovSobre3"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/grupowhatsapp"
@@ -157,14 +178,5 @@
             app:layout_constraintBottom_toBottomOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/textoboiidsobre"
-        android:id="@+id/texto_1"
-        android:gravity="center"
-        android:paddingTop="20dp"
-        app:layout_constraintTop_toBottomOf="@id/grupoemail"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
