@@ -63,8 +63,8 @@ public class ImportacaoFragment extends Fragment {
         chaveImportacao.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (exibirDialogo && (!sisbovsSelecionados.isEmpty() || !sisbovsNaoSelecionados.isEmpty())) {
                 AlertDialog.Builder dialogo = new AlertDialog.Builder(getActivity());
-                dialogo.setMessage("Ao alterar esta opção, todas as listas (e suas respectivas alterações) serão excluídas.\nDeseja realmente realizar esta operação?").setTitle("Importação do Extrato");
-                dialogo.setCancelable(true);
+                dialogo.setMessage("Ao alterar esta opção, todas as listas (e suas respectivas alterações) serão perdidas.\nDeseja realmente realizar esta operação?").setTitle("Importação do Extrato");
+                dialogo.setCancelable(false);
                 dialogo.setPositiveButton("Sim", (dialog, which) -> {
                     sisbovsNaoSelecionados.clear();
                     sisbovsSelecionados.clear();
