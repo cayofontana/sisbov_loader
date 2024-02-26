@@ -78,7 +78,7 @@ public class PrincipalActivity extends AppCompatActivity {
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent evento) {
-        if (evento.getKeyCode() == KeyEvent.KEYCODE_DEL)
+        if (evento.getKeyCode() == KeyEvent.KEYCODE_DEL || evento.getKeyCode() == KeyEvent.KEYCODE_BACK)
             return super.dispatchKeyEvent(evento);
 
         if (evento.getAction() == KeyEvent.ACTION_DOWN && evento.getKeyCode() != KeyEvent.KEYCODE_ENTER) {
