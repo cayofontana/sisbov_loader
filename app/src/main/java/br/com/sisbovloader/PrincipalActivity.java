@@ -8,38 +8,23 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.widget.Toast;
 
+import br.com.sisbovloader.dados.SisbovDataAccess;
 import br.com.sisbovloader.fragmentos.ImportacaoFragment;
 import br.com.sisbovloader.fragmentos.ListaFragment;
 import br.com.sisbovloader.fragmentos.SelecaoFragment;
-import br.com.sisbovloader.fragmentos.SelecaoSemListaFragment;
 import br.com.sisbovloader.fragmentos.SobreFragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class PrincipalActivity extends AppCompatActivity {
-    static final String SISBOVS_NAO_SELECIONADOS = "SISBOVS_NAO_SELECIONADOS";
-    static final String SISBOVS_SELECIONADOS = "SISBOVS_SELECIONADOS";
     private Fragment fragmentoCorrente;
     private int idFragmentoCorrente;
-    private ArrayList<String> sisbovsNaoSelecionados;
-    private ArrayList<String> sisbovsSelecionados;
     private String codigoDeBarras;
-
-    private boolean importarExtrato;
 
     public int getIdFragmento() {
         return idFragmentoCorrente;
-    }
-
-    public boolean getImportarExtrato() {
-        return importarExtrato;
-    }
-
-    public void setImportarExtrato(boolean importarExtrato) {
-        this.importarExtrato = importarExtrato;
-        alterarMenu();
     }
 
     @Override
@@ -49,31 +34,26 @@ public class PrincipalActivity extends AppCompatActivity {
 
         fragmentoCorrente = null;
         idFragmentoCorrente = -1;
-        sisbovsNaoSelecionados = new ArrayList<>();
-        sisbovsSelecionados = new ArrayList<>();
         codigoDeBarras = "";
-        importarExtrato = true;
 
         BottomNavigationView navegacaoView = findViewById(R.id.bottom_navigation);
         navegacaoView.setSelectedItemId(idFragmentoCorrente);
-        getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new ImportacaoFragment()).commit();
+        definirMenuInicial(navegacaoView);
         navegacaoView.setOnItemSelectedListener (item -> {
             if (idFragmentoCorrente == item.getItemId())
                 return false;
-            if (idFragmentoCorrente < 0 || item.getItemId() == R.id.importacao_menu || item.getItemId() == R.id.lista_menu || item.getItemId() == R.id.selecao_menu || item.getItemId() == R.id.selecao_sem_lista_menu) {
-                Bundle pacote = new Bundle();
-                pacote.putStringArrayList(SISBOVS_NAO_SELECIONADOS, sisbovsNaoSelecionados);
-                pacote.putStringArrayList(SISBOVS_SELECIONADOS, sisbovsSelecionados);
-                fragmentoCorrente = item.getItemId() == R.id.lista_menu ? new ListaFragment() : item.getItemId() == R.id.selecao_menu ? new SelecaoFragment() : item.getItemId() == R.id.selecao_sem_lista_menu ? new SelecaoSemListaFragment() : new ImportacaoFragment();
-                fragmentoCorrente.setArguments(pacote);
-            }
-            else
-                fragmentoCorrente = new SobreFragment();
+            fragmentoCorrente = item.getItemId() == R.id.lista_menu ? new ListaFragment() : item.getItemId() == R.id.selecao_menu ? new SelecaoFragment() : item.getItemId() == R.id.importacao_menu ? new ImportacaoFragment() : new SobreFragment();
             idFragmentoCorrente = item.getItemId();
             getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, fragmentoCorrente).commit();
             return true;
         });
-        navegacaoView.setSelectedItemId(R.id.importacao_menu);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        SisbovDataAccess sisbovDataAccess = SisbovDataAccess.obterInstancia(this);
+        sisbovDataAccess.fechar();
     }
 
     @Override
@@ -100,39 +80,37 @@ public class PrincipalActivity extends AppCompatActivity {
             ((ImportacaoFragment) fragmentoCorrente).processarArquivo(codigoRequisicao, codigoResultante, intencao);
     }
 
-    private void alterarMenu() {
-        BottomNavigationView navegacaoView = findViewById(R.id.bottom_navigation);
-        navegacaoView.getMenu().findItem(R.id.lista_menu).setVisible(importarExtrato);
-        navegacaoView.getMenu().findItem(R.id.selecao_menu).setVisible(importarExtrato);
-        navegacaoView.getMenu().findItem(R.id.selecao_sem_lista_menu).setVisible(!importarExtrato);
+    private void definirMenuInicial(BottomNavigationView navegacaoView) {
+        SisbovDataAccess sisbovDataAccess = SisbovDataAccess.obterInstancia(this);
+        if (!sisbovDataAccess.listar(1).isEmpty()) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new SelecaoFragment()).commit();
+            navegacaoView.setSelectedItemId(R.id.selecao_menu);
+        }
+        else if (!sisbovDataAccess.listar(0).isEmpty()) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new ListaFragment()).commit();
+            navegacaoView.setSelectedItemId(R.id.lista_menu);
+        }
+        else {
+            getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new ImportacaoFragment()).commit();
+            navegacaoView.setSelectedItemId(R.id.importacao_menu);
+        }
     }
 
     private void processarCodigoDeBarras() {
-        if (importarExtrato) {
-            if (codigoDeBarras.length() > 15)
-                codigoDeBarras = codigoDeBarras.substring(codigoDeBarras.length() - 15);
-            if (!sisbovsNaoSelecionados.contains(codigoDeBarras) && !sisbovsSelecionados.contains(codigoDeBarras))
-                Toast.makeText(getApplicationContext(), "O SISBOV " + codigoDeBarras + " não foi encontrado.", Toast.LENGTH_SHORT).show();
-            else if (sisbovsSelecionados.contains(codigoDeBarras))
-                Toast.makeText(getApplicationContext(), "O SISBOV " + codigoDeBarras + " já está na lista de seleção.", Toast.LENGTH_LONG).show();
+        SisbovDataAccess sisbovDataAccess = SisbovDataAccess.obterInstancia(this);
+        if (codigoDeBarras.length() > 15) {
+            codigoDeBarras = codigoDeBarras.substring(codigoDeBarras.length() - 15);
+            int situacaoDoSisbov = sisbovDataAccess.obterEstado(codigoDeBarras);
+            if (situacaoDoSisbov == -1)
+                Toast.makeText(this, "O SISBOV " + codigoDeBarras + " não foi encontrado.", Toast.LENGTH_SHORT).show();
+            else if (situacaoDoSisbov == 1)
+                Toast.makeText(this, "O SISBOV " + codigoDeBarras + " já está na lista de seleção.", Toast.LENGTH_LONG).show();
             else {
-                sisbovsSelecionados.add(codigoDeBarras);
-                sisbovsNaoSelecionados.remove(codigoDeBarras);
+                sisbovDataAccess.atualizar(codigoDeBarras, 1);
                 BottomNavigationView navegacaoView = findViewById(R.id.bottom_navigation);
                 if (idFragmentoCorrente == R.id.selecao_menu)
                     navegacaoView.setSelectedItemId(R.id.lista_menu);
                 navegacaoView.setSelectedItemId(R.id.selecao_menu);
-            }
-        }
-        else {
-            if (sisbovsSelecionados.contains(codigoDeBarras))
-                Toast.makeText(getApplicationContext(), "O código " + codigoDeBarras + " já está na lista.", Toast.LENGTH_LONG).show();
-            else {
-                sisbovsSelecionados.add(codigoDeBarras);
-                BottomNavigationView navegacaoView = findViewById(R.id.bottom_navigation);
-                if (idFragmentoCorrente == R.id.selecao_sem_lista_menu)
-                    navegacaoView.setSelectedItemId(R.id.sobre_menu);
-                navegacaoView.setSelectedItemId(R.id.selecao_sem_lista_menu);
             }
         }
     }

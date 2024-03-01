@@ -12,7 +12,7 @@
         android:layout_height="0dp"
         android:id="@+id/grupoImportacao"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/chaveImportacao"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent">
 
@@ -59,15 +59,5 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <com.google.android.material.switchmaterial.SwitchMaterial
-        android:id="@+id/chaveImportacao"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/botao_utilizar_importacao"
-        android:textAppearance="@style/TextAppearance.AppCompat.Button"
-        android:background="#f0f0f0"
-        android:paddingStart="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

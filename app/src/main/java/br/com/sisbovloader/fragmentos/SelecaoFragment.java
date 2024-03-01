@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import br.com.sisbovloader.R;
+import br.com.sisbovloader.dados.SisbovDataAccess;
 import br.com.sisbovloader.fragmentos.recursos.GestorPDF;
 import br.com.sisbovloader.fragmentos.recursos.SisbovListaAdapter;
 
@@ -29,21 +30,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SelecaoFragment extends Fragment {
-    private static final String SISBOVS_NAO_SELECIONADOS = "SISBOVS_NAO_SELECIONADOS";
     private static final String SISBOVS_SELECIONADOS = "SISBOVS_SELECIONADOS";
-    private List<String> sisbovsNaoSelecionados;
-    private List<String> sisbovsSelecionados;
+    private List<String> sisbovs;
     private List<String> sisbovsListView;
     private SisbovListaAdapter sisbovListaAdapter;
+    private SisbovDataAccess sisbovDataAccess;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            sisbovsNaoSelecionados = getArguments().getStringArrayList(SISBOVS_NAO_SELECIONADOS);
-            sisbovsSelecionados = getArguments().getStringArrayList(SISBOVS_SELECIONADOS);
-        }
-        sisbovsListView = new ArrayList<>(sisbovsSelecionados);
+        sisbovDataAccess = SisbovDataAccess.obterInstancia(getContext());
+        sisbovs = sisbovDataAccess.listar(1);
+        sisbovsListView = new ArrayList<>(sisbovs);
     }
 
     @Override
@@ -91,8 +89,9 @@ public class SelecaoFragment extends Fragment {
             dialogo.setMessage(R.string.mensagem_dialogo_lista).setTitle(R.string.titulo_dialogo_lista);
             dialogo.setCancelable(false);
             dialogo.setPositiveButton("Sim", (dialog, which) -> {
-                sisbovsNaoSelecionados.addAll(sisbovsSelecionados);
-                sisbovsSelecionados.clear();
+                for (String sisbov : sisbovs)
+                    sisbovDataAccess.atualizar(sisbov, 0);
+                sisbovs.clear();
                 sisbovsListView.clear();
                 ListView lvwSisbovs = getView().findViewById(R.id.lvwSisbovs);
                 lvwSisbovs.setAdapter(null);
@@ -116,7 +115,7 @@ public class SelecaoFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable editavel) {
                 sisbovsListView.clear();
-                for (String sisbov : sisbovsSelecionados)
+                for (String sisbov : sisbovs)
                     if (sisbov.contains(editavel.toString()))
                         sisbovsListView.add(sisbov);
                 atualizarLista(sisbovListaAdapter, txtTotal);
@@ -128,17 +127,14 @@ public class SelecaoFragment extends Fragment {
     private void atualizarLista(SisbovListaAdapter sisbovListaAdapter, @NonNull TextView txtTotal) {
         sisbovListaAdapter.notifyDataSetChanged();
         txtTotal.setText(String.valueOf(sisbovsListView.size()));
+        sisbovs = sisbovDataAccess.listar(1);
     }
 
     @NonNull
     private SisbovListaAdapter exibirSisbovs(TextView txtTotal) {
         ListView lvwSisbovs = getView().findViewById(R.id.lvwSisbovs);
-        SisbovListaAdapter sisbovListaAdapter = new SisbovListaAdapter(getContext(), sisbovsSelecionados, sisbovsNaoSelecionados, sisbovsListView, txtTotal);
-
-        if (!sisbovsListView.isEmpty()) {
-            lvwSisbovs.setVisibility(View.VISIBLE);
-            lvwSisbovs.setAdapter(sisbovListaAdapter);
-        }
+        SisbovListaAdapter sisbovListaAdapter = new SisbovListaAdapter(getContext(), sisbovsListView, sisbovDataAccess, txtTotal);
+        lvwSisbovs.setAdapter(sisbovListaAdapter);
         return sisbovListaAdapter;
     }
 }

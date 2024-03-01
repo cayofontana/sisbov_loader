@@ -16,26 +16,23 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import br.com.sisbovloader.R;
+import br.com.sisbovloader.dados.SisbovDataAccess;
 import br.com.sisbovloader.fragmentos.recursos.SisbovListaAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ListaFragment extends Fragment {
-    private static final String SISBOVS_NAO_SELECIONADOS = "SISBOVS_NAO_SELECIONADOS";
-    private static final String SISBOVS_SELECIONADOS = "SISBOVS_SELECIONADOS";
-    private List<String> sisbovsNaoSelecionados;
-    private List<String> sisbovsSelecionados;
+    private List<String> sisbovs;
     private List<String> sisbovsListView;
+    private SisbovDataAccess sisbovDataAccess;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            sisbovsNaoSelecionados = getArguments().getStringArrayList(SISBOVS_NAO_SELECIONADOS);
-            sisbovsSelecionados = getArguments().getStringArrayList(SISBOVS_SELECIONADOS);
-        }
-        sisbovsListView = new ArrayList<>(sisbovsNaoSelecionados);
+        sisbovDataAccess = SisbovDataAccess.obterInstancia(getContext());
+        sisbovs = sisbovDataAccess.listar(0);
+        sisbovsListView = new ArrayList<>(sisbovs);
     }
 
     @Override
@@ -65,7 +62,7 @@ public class ListaFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable editavel) {
                 sisbovsListView.clear();
-                for (String sisbov : sisbovsNaoSelecionados)
+                for (String sisbov : sisbovs)
                     if (sisbov.contains(editavel.toString()))
                         sisbovsListView.add(sisbov);
                 AtualizarLista(txtTotal);
@@ -76,17 +73,14 @@ public class ListaFragment extends Fragment {
 
     private void AtualizarLista(@NonNull TextView txtTotal) {
         txtTotal.setText(String.valueOf(sisbovsListView.size()));
+        sisbovs = sisbovDataAccess.listar(0);
     }
 
     @NonNull
     private SisbovListaAdapter exibirSisbovs(TextView txtTotal) {
         ListView lvwSisbovs = getView().findViewById(R.id.lvwSisbovs);
-        SisbovListaAdapter sisbovListaAdapter = new SisbovListaAdapter(getContext(), sisbovsNaoSelecionados, sisbovsSelecionados, sisbovsListView, txtTotal);
-
-        if (!sisbovsListView.isEmpty()) {
-            lvwSisbovs.setVisibility(View.VISIBLE);
-            lvwSisbovs.setAdapter(sisbovListaAdapter);
-        }
+        SisbovListaAdapter sisbovListaAdapter = new SisbovListaAdapter(getContext(), sisbovsListView, sisbovDataAccess, txtTotal);
+        lvwSisbovs.setAdapter(sisbovListaAdapter);
         return sisbovListaAdapter;
     }
 }
