@@ -37,8 +37,10 @@ public class PrincipalActivity extends AppCompatActivity {
         codigoDeBarras = "";
 
         BottomNavigationView navegacaoView = findViewById(R.id.bottom_navigation);
+        definirMenuInicial();
         navegacaoView.setSelectedItemId(idFragmentoCorrente);
-        definirMenuInicial(navegacaoView);
+        getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, fragmentoCorrente).commit();
+
         navegacaoView.setOnItemSelectedListener (item -> {
             if (idFragmentoCorrente == item.getItemId())
                 return false;
@@ -80,19 +82,19 @@ public class PrincipalActivity extends AppCompatActivity {
             ((ImportacaoFragment) fragmentoCorrente).processarArquivo(codigoRequisicao, codigoResultante, intencao);
     }
 
-    private void definirMenuInicial(BottomNavigationView navegacaoView) {
+    private void definirMenuInicial() {
         SisbovDataAccess sisbovDataAccess = SisbovDataAccess.obterInstancia(this);
         if (!sisbovDataAccess.listar(1).isEmpty()) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new SelecaoFragment()).commit();
-            navegacaoView.setSelectedItemId(R.id.selecao_menu);
+            idFragmentoCorrente = R.id.selecao_menu;
+            fragmentoCorrente = new SelecaoFragment();
         }
         else if (!sisbovDataAccess.listar(0).isEmpty()) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new ListaFragment()).commit();
-            navegacaoView.setSelectedItemId(R.id.lista_menu);
+            idFragmentoCorrente = R.id.lista_menu;
+            fragmentoCorrente = new ListaFragment();
         }
         else {
-            getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new ImportacaoFragment()).commit();
-            navegacaoView.setSelectedItemId(R.id.importacao_menu);
+            idFragmentoCorrente = R.id.importacao_menu;
+            fragmentoCorrente = new ImportacaoFragment();
         }
     }
 
