@@ -16,8 +16,6 @@ import br.com.sisbovloader.fragmentos.SobreFragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.util.List;
-
 public class PrincipalActivity extends AppCompatActivity {
     private Fragment fragmentoCorrente;
     private int idFragmentoCorrente;
