@@ -100,8 +100,9 @@ public class PrincipalActivity extends AppCompatActivity {
 
     private void processarCodigoDeBarras() {
         SisbovDataAccess sisbovDataAccess = SisbovDataAccess.obterInstancia(this);
-        if (codigoDeBarras.length() > 15) {
+        if (codigoDeBarras.length() > 15)
             codigoDeBarras = codigoDeBarras.substring(codigoDeBarras.length() - 15);
+        else if (codigoDeBarras.length() == 15) {
             int situacaoDoSisbov = sisbovDataAccess.obterEstado(codigoDeBarras);
             if (situacaoDoSisbov == -1)
                 Toast.makeText(this, "O SISBOV " + codigoDeBarras + " não foi encontrado.", Toast.LENGTH_SHORT).show();
@@ -115,5 +116,7 @@ public class PrincipalActivity extends AppCompatActivity {
                 navegacaoView.setSelectedItemId(R.id.selecao_menu);
             }
         }
+        else
+            Toast.makeText(this, "O valor lido (" + codigoDeBarras + ") não é válido. Repita a operação.", Toast.LENGTH_LONG).show();
     }
 }
